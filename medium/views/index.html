@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo App</title>
+  </head>
+  <body>
+    <h2>Tasks</h2>
+    <ul>
+      ${tasks.map(task => `
+      <li style="display: flex">
+        <div>${task.title}</div>
+        <div id="${task.id}" class="trash" onclick="deleteTask(this)">🗑️</div>
+      </li>
+      `).join("")}
+    </ul>
+    <h2>Add A Task</h2>
+    <form>
+      <label for="name">Title:</label>
+      <input type="text" id="title" name="title" required /><br /><br />
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+  <script>
+    const form = document.querySelector("form");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      fetch("/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title: formData.get("title") }),
+      }).then((res) => {
+        if (res.ok) {
+          window.location.reload();
+        }
+      });
+    });
+
+    const deleteTask = (task) => {
+      fetch("/tasks/" + task.id, { method: "DELETE" }).then((res) => {
+        if (res.ok) {
+          window.location.reload();
+        }
+      });
+    };
+  </script>
+</html>
