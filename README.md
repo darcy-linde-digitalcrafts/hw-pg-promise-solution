@@ -34,7 +34,7 @@
 
 - `cd ../medium`
 - `npm init -y`
-- `npm i express && npm i pg-promise`
+- `npm i express pg-promise`
 - `touch app.js`
 - Copy [hello world starter](https://expressjs.com/en/starter/hello-world.html)
   into app.js
